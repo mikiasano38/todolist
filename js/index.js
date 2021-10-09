@@ -120,7 +120,6 @@ function add(text){
 }
 
 function remove(text){
-    console.log("inside remove() before value of todoListArray was", todoListArray)
 
     let index = todoListArray.indexOf(text); // will give you -1 if text not found in array
     if(index > -1){
