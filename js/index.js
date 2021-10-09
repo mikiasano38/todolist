@@ -6,32 +6,8 @@ var todoListArray = [];
 var storage = localStorage.getItem("todolist");
 if(storage){
     todoListArray = JSON.parse(storage);
-    createTodoListHTML();  //これがあるから、HTML上にlistが見れる
+    createTodoListHTML();
 }
-
-
-/*
-HOw to find a bug and investigate:
-- Clearly state what is the  bug.
-******
-When i add todolist, the last entry disappears.
-
-
-- Reproduce the bug and identify the exact steps to cause  it again.
-******
-enter a todolist
-enter  one more todo list  
-all is fine 
-delete one of the todo list
-enter a new todolist
-suddenly one of the prev todo list disappears
-
-
-
-- Use  console.log to  check each step is correctly being  executed  or not.
-- Find  the line/lines of code that cause the bug.
-- Make a fix.
-*/
 
 
 textInput.addEventListener("keypress", e => {
@@ -51,15 +27,13 @@ textInput.addEventListener("keypress", e => {
     textInput.value = "";
 });
 
-//  todoListArray = ["ash", "miki", "monkey"];
-// todoListArray[0]
 clearDataBtn.addEventListener("click", () =>{
     clearData();
 })
 
 
 function clearData(){
-    localStorage.clear(); // this step will make todoListArray null
+    localStorage.clear();
     todoListArray = [];
     createTodoListHTML();
 }
@@ -74,7 +48,7 @@ function createTodoListHTML(){
     }
     
     todoListArray = JSON.parse(todoListArray)
-    for(let i=0; i < todoListArray.length; i++){ // this will loop 3 times
+    for(let i=0; i < todoListArray.length; i++){
         let text = todoListArray[i];
         let li = document.createElement("li");
         li.classList.add("list-item");
@@ -99,61 +73,33 @@ function createTodoListHTML(){
 }
 
 function add(text){
-    // check for duplicate
-    console.log("inside add() "+ "text value is ", text)
     let result = hasDuplicate(text);
-    console.log("hasDuplicate() "+result)
 
-    if (result === true){  //  means duplicate exists, and don't add to the todolist
-        // alert(`"${text}", already exists, please try some other task name!`)
+    if (result === true){ 
         errorMessage.textContent =  `"${text}", already exists, please try some other task name!`;
         return;
     }else{
-        // add text to the array
-        console.log("adding todo to todoListArray")
-        //text.toUppercase() use convert method
         todoListArray.push(text);
         saveInLocalStorage("todolist", todoListArray);
-
-        console.log("todoListArray value is: ", todoListArray)
     }
 }
 
 function remove(text){
 
-    let index = todoListArray.indexOf(text); // will give you -1 if text not found in array
+    let index = todoListArray.indexOf(text);
     if(index > -1){
         todoListArray.splice(index, 1)
     }
     saveInLocalStorage("todolist", todoListArray);
-    // a = [ash, miki, lazy]
-    //  a.splice(1, 2)
-    
-    console.log("inside remove() after value of todoListArray now", todoListArray)
-    // prev: ["ash", "miki"]
-    // when you delete  ash, splice creates a new array : ["miki"]
 }
 
 function hasDuplicate(text){
-    let duplicateFound = todoListArray.includes(text); // this will return true if text exists in arr
+    let duplicateFound = todoListArray.includes(text);
     return duplicateFound;
-    // yes or no, true or false
 }
 
 
 function saveInLocalStorage(key, data){
-    data = JSON.stringify(data); // before saving data just do this step
+    data = JSON.stringify(data);
     localStorage.setItem(key, data);
 }
-
-// function test(){
-//     return 1+1;
-// }
-
-// test() // = 2 
-
-// function test2(text){ 
-//     return text + " customer";
-// }
-
-// let result = test2("hello") // hello customer
